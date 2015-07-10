@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxDialog" name="BruteDialog">
+		<title>Bruteforce</title>
+		<size>400,400</size>
+		<minsize>400,400</minsize>
+		<maxsize>400,-1</maxsize>
+		<extra_code>*/</extra_code>
+		<id_arg>0</id_arg>
+		<object class="wxPanel" name="ID_PANEL" variable="panel" member="yes">
+			<size>400,400</size>
+			<object class="wxTextCtrl" name="ID_CHECKTICINPUT" variable="checkTicInput" member="yes">
+				<pos>288,56</pos>
+				<size>96,21</size>
+				<validator>wxIntegerValidator&lt;unsigned int&gt;()</validator>
+				<style>wxTE_RIGHT</style>
+			</object>
+			<object class="wxTextCtrl" name="ID_RNGINPUT" variable="rngInput" member="yes">
+				<pos>328,96</pos>
+				<size>56,21</size>
+				<validator>wxTextValidator()</validator>
+				<style>wxTE_RIGHT</style>
+			</object>
+			<object class="wxTextCtrl" name="ID_DAMAGEINPUT" variable="damageInput" member="yes">
+				<pos>328,128</pos>
+				<size>56,21</size>
+				<validator>wxIntegerValidator&lt;unsigned int&gt;()</validator>
+				<style>wxTE_RIGHT</style>
+			</object>
+			<object class="wxTextCtrl" name="ID_XPOSINPUT" variable="xPosInput" member="yes">
+				<pos>328,160</pos>
+				<size>56,21</size>
+				<validator>wxFloatingPointValidator&lt;double&gt;()</validator>
+				<style>wxTE_RIGHT</style>
+			</object>
+			<object class="wxTextCtrl" name="ID_YPOSINPUT" variable="yPosInput" member="yes">
+				<pos>328,192</pos>
+				<size>56,21</size>
+				<validator>wxFloatingPointValidator&lt;double&gt;()</validator>
+				<style>wxTE_RIGHT</style>
+			</object>
+			<object class="wxTextCtrl" name="ID_XMOMINPUT" variable="xMomInput" member="yes">
+				<pos>328,224</pos>
+				<size>56,21</size>
+				<validator>wxFloatingPointValidator&lt;double&gt;()</validator>
+				<style>wxTE_RIGHT</style>
+			</object>
+			<object class="wxTextCtrl" name="ID_YMOMINPUT" variable="yMomInput" member="yes">
+				<pos>328,256</pos>
+				<size>56,21</size>
+				<validator>wxFloatingPointValidator&lt;double&gt;()</validator>
+				<style>wxTE_RIGHT</style>
+			</object>
+			<object class="wxTextCtrl" name="ID_SPEEDINPUT" variable="speedInput" member="yes">
+				<pos>328,288</pos>
+				<size>56,21</size>
+				<validator>wxFloatingPointValidator&lt;double&gt;()</validator>
+				<style>wxTE_RIGHT</style>
+			</object>
+			<object class="wxCheckBox" name="ID_RNGCHECKBOX" variable="rngCheckBox" member="yes">
+				<label>Rng index</label>
+				<pos>201,102</pos>
+				<style>wxALIGN_RIGHT</style>
+			</object>
+			<object class="wxChoice" name="ID_RNGCHOICE" variable="rngChoice" member="yes">
+				<content>
+					<item>=</item>
+					<item>!=</item>
+				</content>
+				<selection>0</selection>
+				<pos>280,96</pos>
+				<size>40,21</size>
+			</object>
+			<object class="wxCheckBox" name="ID_DAMAGECHECKBOX" variable="damageCheckBox" member="yes">
+				<label>Dmg</label>
+				<pos>227,134</pos>
+				<style>wxALIGN_RIGHT</style>
+			</object>
+			<object class="wxChoice" name="ID_DAMAGECHOICE" variable="damageChoice" member="yes">
+				<content>
+					<item>=</item>
+					<item>&gt;=</item>
+					<item>&gt;</item>
+					<item>&lt;=</item>
+					<item>&lt;</item>
+				</content>
+				<selection>0</selection>
+				<pos>280,128</pos>
+				<size>40,21</size>
+			</object>
+			<object class="wxCheckBox" name="ID_XPOSCHECKBOX" variable="xPosCheckBox" member="yes">
+				<label>X pos</label>
+				<pos>224,166</pos>
+				<style>wxALIGN_RIGHT</style>
+			</object>
+			<object class="wxChoice" name="ID_XPOSCHOICE" variable="xPosChoice" member="yes">
+				<content>
+					<item>=</item>
+					<item>&gt;=</item>
+					<item>&gt;</item>
+					<item>&lt;=</item>
+					<item>&lt;</item>
+				</content>
+				<selection>0</selection>
+				<pos>280,160</pos>
+				<size>40,21</size>
+			</object>
+			<object class="wxCheckBox" name="ID_YPOSCHECKBOX" variable="yPosCheckBox" member="yes">
+				<label>Y pos</label>
+				<pos>224,198</pos>
+				<style>wxALIGN_RIGHT</style>
+			</object>
+			<object class="wxChoice" name="ID_YPOSCHOICE" variable="yPosChoice" member="yes">
+				<content>
+					<item>=</item>
+					<item>&gt;=</item>
+					<item>&gt;</item>
+					<item>&lt;=</item>
+					<item>&lt;</item>
+				</content>
+				<selection>0</selection>
+				<pos>280,192</pos>
+				<size>40,21</size>
+			</object>
+			<object class="wxCheckBox" name="ID_XMOMCHECKBOX" variable="xMomCheckBox" member="yes">
+				<label>X mom</label>
+				<pos>214,230</pos>
+				<style>wxALIGN_RIGHT</style>
+			</object>
+			<object class="wxChoice" name="ID_XMOMCHOICE" variable="xMomChoice" member="yes">
+				<content>
+					<item>=</item>
+					<item>&gt;=</item>
+					<item>&gt;</item>
+					<item>&lt;=</item>
+					<item>&lt;</item>
+				</content>
+				<selection>0</selection>
+				<pos>280,224</pos>
+				<size>40,21</size>
+			</object>
+			<object class="wxCheckBox" name="ID_YMOMCHECKBOX" variable="yMomCheckBox" member="yes">
+				<label>Y mom</label>
+				<pos>214,262</pos>
+				<style>wxALIGN_RIGHT</style>
+			</object>
+			<object class="wxChoice" name="ID_YMOMCHOICE" variable="yMomChoice" member="yes">
+				<content>
+					<item>=</item>
+					<item>&gt;=</item>
+					<item>&gt;</item>
+					<item>&lt;=</item>
+					<item>&lt;</item>
+				</content>
+				<selection>0</selection>
+				<pos>280,256</pos>
+				<size>40,21</size>
+			</object>
+			<object class="wxCheckBox" name="ID_SPEEDCHECKBOX" variable="speedCheckBox" member="yes">
+				<label>Speed</label>
+				<pos>221,294</pos>
+				<style>wxALIGN_RIGHT</style>
+			</object>
+			<object class="wxChoice" name="ID_SPEEDCHOICE" variable="speedChoice" member="yes">
+				<content>
+					<item>=</item>
+					<item>&gt;=</item>
+					<item>&gt;</item>
+					<item>&lt;=</item>
+					<item>&lt;</item>
+				</content>
+				<selection>0</selection>
+				<pos>280,288</pos>
+				<size>40,21</size>
+			</object>
+			<object class="wxCheckBox" name="ID_USECHECKBOX" variable="useCheckBox" member="yes">
+				<label>Use</label>
+				<pos>234,326</pos>
+				<style>wxALIGN_RIGHT</style>
+			</object>
+			<object class="wxListBox" name="ID_BRUTETICSBOX" variable="bruteTicsBox" member="yes">
+				<default>-1</default>
+				<pos>16,40</pos>
+				<size>168,80</size>
+				<handler function="OnBruteTicsBoxSelect" entry="EVT_LISTBOX" />
+			</object>
+			<object class="wxButton" name="ID_ADDBUTTON" variable="addButton" member="yes">
+				<label>Add</label>
+				<pos>16,128</pos>
+				<size>74,-1</size>
+			</object>
+			<object class="wxButton" name="ID_REMOVEBUTTON" variable="removeButton" member="yes">
+				<label>Remove</label>
+				<pos>110,128</pos>
+				<size>74,-1</size>
+				<enabled>0</enabled>
+			</object>
+			<object class="wxTextCtrl" name="ID_BRUTETICINPUT" variable="bruteTicInput" member="yes">
+				<pos>88,160</pos>
+				<size>96,21</size>
+				<validator>wxIntegerValidator&lt;unsigned int&gt;()</validator>
+				<enabled>0</enabled>
+				<style>wxTE_RIGHT</style>
+				<handler function="OnBruteTicInputText" entry="EVT_TEXT" />
+			</object>
+			<object class="wxTextCtrl" name="ID_STRAFECMDINPUT" variable="strafeCmdInput" member="yes">
+				<pos>88,184</pos>
+				<size>96,21</size>
+				<validator>wxTextValidator()</validator>
+				<enabled>0</enabled>
+				<style>wxTE_RIGHT</style>
+				<handler function="OnStrafeCmdInputText" entry="EVT_TEXT" />
+			</object>
+			<object class="wxTextCtrl" name="ID_RUNCMDINPUT" variable="runCmdInput" member="yes">
+				<pos>88,208</pos>
+				<size>96,21</size>
+				<validator>wxTextValidator()</validator>
+				<enabled>0</enabled>
+				<style>wxTE_RIGHT</style>
+				<handler function="OnRunCmdInputText" entry="EVT_TEXT" />
+			</object>
+			<object class="wxTextCtrl" name="ID_TURNCMDINPUT" variable="turnCmdInput" member="yes">
+				<pos>88,232</pos>
+				<size>96,21</size>
+				<validator>wxTextValidator()</validator>
+				<enabled>0</enabled>
+				<style>wxTE_RIGHT</style>
+				<handler function="OnTurnCmdInputText" entry="EVT_TEXT" />
+			</object>
+			<object class="wxButton" name="ID_TURNANGLEBUTTON" variable="turnAngleButton" member="yes">
+				<label>Turn cmds</label>
+				<pos>16,232</pos>
+				<size>67,23</size>
+				<enabled>0</enabled>
+			</object>
+			<object class="wxRadioBox" name="ID_FIRERADIOBOX" variable="fireRadioBox" member="yes">
+				<label>Fire</label>
+				<content>
+					<item>No</item>
+					<item>Both</item>
+					<item>Yes</item>
+				</content>
+				<dimension>3</dimension>
+				<pos>72,256</pos>
+				<size>56,88</size>
+				<enabled>0</enabled>
+				<style>wxRA_VERTICAL</style>
+				<handler function="OnFireRadioBoxSelect" entry="EVT_RADIOBOX" />
+			</object>
+			<object class="wxRadioBox" name="ID_USERADIOBOX" variable="useRadioBox" member="yes">
+				<label>Use</label>
+				<content>
+					<item>No</item>
+					<item>Both</item>
+					<item>Yes</item>
+				</content>
+				<dimension>3</dimension>
+				<pos>128,256</pos>
+				<size>56,88</size>
+				<enabled>0</enabled>
+				<style>wxRA_VERTICAL</style>
+				<handler function="OnUseRadioBoxSelect" entry="EVT_RADIOBOX" />
+			</object>
+			<object class="wxButton" name="ID_CANCEL" variable="cancel" member="yes">
+				<label>Cancel</label>
+				<pos>248,360</pos>
+			</object>
+			<object class="wxButton" name="ID_START" variable="start" member="yes">
+				<label>Start</label>
+				<pos>80,360</pos>
+			</object>
+			<object class="wxStaticText" name="ID_WORKINGTEXT" variable="workingText" member="yes">
+				<label>Working...</label>
+				<pos>176,364</pos>
+				<hidden>1</hidden>
+			</object>
+			<object class="wxStaticBox" name="ID_STATICBOX1" variable="StaticBox1" member="yes">
+				<label>Checks</label>
+				<pos>200,16</pos>
+				<size>192,336</size>
+			</object>
+			<object class="wxStaticBox" name="ID_STATICBOX2" variable="StaticBox2" member="yes">
+				<label>Tics to bruteforce</label>
+				<pos>8,16</pos>
+				<size>192,336</size>
+			</object>
+			<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
+				<label>On tic</label>
+				<pos>248,60</pos>
+			</object>
+			<object class="wxStaticText" name="ID_STATICTEXT2" variable="StaticText2" member="yes">
+				<label>Tic</label>
+				<pos>62,164</pos>
+			</object>
+			<object class="wxStaticText" name="ID_STATICTEXT3" variable="StaticText3" member="yes">
+				<label>Run cmds</label>
+				<pos>26,212</pos>
+			</object>
+			<object class="wxStaticText" name="ID_STATICTEXT4" variable="StaticText4" member="yes">
+				<label>Strafe cmds</label>
+				<pos>16,188</pos>
+			</object>
+		</object>
+	</object>
+</wxsmith>

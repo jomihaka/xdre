@@ -314,31 +314,31 @@ static void I_EndDoom(void)
   if (lump != -1)
   {
     endoom_data = W_CacheLumpNum(lump);
-    
+
     // Set up text mode screen
     TXT_Init();
-    
+
     // Make sure the new window has the right title and icon
     I_SetWindowCaption();
     I_SetWindowIcon();
-    
+
     // Write the data to the screen memory
     screendata = TXT_GetScreenData();
     memcpy(screendata, endoom_data, 4000);
-    
+
     // Wait for a keypress
     while (true)
     {
       TXT_UpdateScreen();
-      
+
       if (TXT_GetChar() > 0)
       {
         break;
       }
-      
+
       TXT_Sleep(0);
     }
-    
+
     // Shut down text mode screen
     TXT_Shutdown();
   }
@@ -520,7 +520,7 @@ static void I_SetAffinityMask(void)
   }
 
   // Set the process affinity mask so that all threads
-  // run on the same processor.  This is a workaround for a bug in 
+  // run on the same processor.  This is a workaround for a bug in
   // SDL_mixer that causes occasional crashes.
   if (process_affinity_mask)
   {
@@ -625,7 +625,8 @@ void I_SetProcessPriority(void)
 }
 
 //int main(int argc, const char * const * argv)
-int main(int argc, char **argv)
+//int main(int argc, char **argv)
+void initDoom(int argc, char **argv)
 {
 #ifdef SECURE_UID
   /* First thing, revoke setuid status (if any) */
@@ -642,7 +643,7 @@ int main(int argc, char **argv)
   memcpy(myargv, argv, sizeof(myargv[0]) * myargc);
 
   // e6y: Check for conflicts.
-  // Conflicting command-line parameters could cause the engine to be confused 
+  // Conflicting command-line parameters could cause the engine to be confused
   // in some cases. Added checks to prevent this.
   // Example: glboom.exe -record mydemo -playdemo demoname
   ParamsMatchingCheck();
@@ -699,14 +700,14 @@ int main(int argc, char **argv)
 #endif
 
   // Ability to use only the allowed CPUs
-  I_SetAffinityMask();
+//I_SetAffinityMask();
 
   // Priority class for the prboom-plus process
-  I_SetProcessPriority();
+//I_SetProcessPriority();
 
   /* cphipps - call to video specific startup code */
   I_PreInitGraphics();
 
   D_DoomMain ();
-  return 0;
+//return 0;
 }

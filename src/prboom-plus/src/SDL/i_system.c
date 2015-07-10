@@ -107,7 +107,7 @@ int I_GetTime_RealTime (void)
 {
   int i;
   int t = SDL_GetTicks();
-  
+
   //e6y: removing startup delay
   if (basetime == 0)
     basetime = t;
@@ -132,7 +132,7 @@ dboolean I_StartDisplay(void)
     return false;
 
   realframe = (!movement_smooth) || (gametic > saved_gametic);
-  
+
   if (realframe)
     saved_gametic = gametic;
 
@@ -276,7 +276,7 @@ dboolean I_FileToBuffer(const char *filename, byte **data, int *size)
 }
 #endif // PRBOOM_SERVER
 
-/* 
+/*
  * I_Read
  *
  * cph 2001/11/18 - wrapper for read(2) which handles partial reads and aborts
@@ -322,7 +322,7 @@ void I_SwitchToWindow(HWND hwnd)
 
   if (!SwitchToThisWindow)
     SwitchToThisWindow = (TSwitchToThisWindow)GetProcAddress(GetModuleHandle("user32.dll"), "SwitchToThisWindow");
-  
+
   if (SwitchToThisWindow)
   {
     HWND hwndLastActive = GetLastActivePopup(hwnd);
@@ -392,7 +392,7 @@ const char* I_GetTempDir(void)
 // cph - V.Aguilar (5/30/99) suggested return ~/.lxdoom/, creating
 //  if non-existant
 // cph 2006/07/23 - give prboom+ its own dir
-static const char prboom_dir[] = {"/.prboom-plus"}; // Mead rem extra slash 8/21/03
+static const char prboom_dir[] = {"/.xdre"}; // Mead rem extra slash 8/21/03
 
 const char *I_DoomExeDir(void)
 {

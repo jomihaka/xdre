@@ -409,15 +409,15 @@ fixed_t P_FindNextHighestFloor(sector_t *sec, int currentheight)
       } while (sec->linecount > heightlist_size);
       heightlist = realloc(heightlist, heightlist_size * sizeof(heightlist[0]));
     }
-    
+
     for (i=0, h=0 ;i < sec->linecount ; i++)
     {
       check = sec->lines[i];
       other = getNextSector(check,sec);
-      
+
       if (!other)
         continue;
-      
+
       if (other->floorheight > height)
       {
         // e6y
@@ -443,7 +443,7 @@ fixed_t P_FindNextHighestFloor(sector_t *sec, int currentheight)
         }
         heightlist[h++] = other->floorheight;
       }
-      
+
       // Check for overflow. Warning.
       if ( compatibility_level >= dosdoom_compatibility && h >= MAX_ADJOINING_SECTORS )
       {
@@ -451,22 +451,22 @@ fixed_t P_FindNextHighestFloor(sector_t *sec, int currentheight)
         break;
       }
     }
-    
+
     // Find lowest height in list
     if (!h)
     {
       return (compatibility_level < doom_1666_compatibility ? 0 : currentheight);
     }
-    
+
     min = heightlist[0];
-    
-    // Range checking? 
+
+    // Range checking?
     for (i = 1;i < h;i++)
     {
       if (heightlist[i] < min)
         min = heightlist[i];
     }
-      
+
     return min;
   }
 
@@ -1042,8 +1042,8 @@ dboolean P_CanUnlockGenDoor
           // There is no more desync on 10sector.wad\ts27-137.lmp
           // http://www.doomworld.com/tas/ts27-137.zip
           (!player->cards[it_yellowcard] &&
-            (compatibility_level == mbf_compatibility && 
-             !prboom_comp[PC_FORCE_CORRECT_CODE_FOR_3_KEYS_DOORS_IN_MBF].state ? 
+            (compatibility_level == mbf_compatibility &&
+             !prboom_comp[PC_FORCE_CORRECT_CODE_FOR_3_KEYS_DOORS_IN_MBF].state ?
              player->cards[it_yellowskull] :
              !player->cards[it_yellowskull]))
         )
@@ -1221,9 +1221,15 @@ dboolean PUREFUNC P_WasSecret(const sector_t *sec)
 //  crossed. Change is qualified by demo_compatibility.
 //
 // CPhipps - take a line_t pointer instead of a line number, as in MBF
+int xLineId;
+int xLineCrossed;
 void P_CrossSpecialLine(line_t *line, int side, mobj_t *thing)
 {
   int         ok;
+
+  if (line->iLineID == xLineId) {
+    xLineCrossed = 1;
+  }
 
   //  Things that should never trigger lines
   //
@@ -2593,7 +2599,7 @@ void P_SpawnSpecials (void)
     if (sector->special&SECRET_MASK) //jff 3/15/98 count extended
       totalsecret++;                 // secret sectors too
 
-    switch ((demo_compatibility && !prboom_comp[PC_TRUNCATED_SECTOR_SPECIALS].state) ? 
+    switch ((demo_compatibility && !prboom_comp[PC_TRUNCATED_SECTOR_SPECIALS].state) ?
       sector->special : sector->special&31)
     {
       case 1:

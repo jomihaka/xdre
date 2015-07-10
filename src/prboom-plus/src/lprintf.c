@@ -326,6 +326,7 @@ void Done_ConsoleWin(void)
 int lprintf(OutputLevels pri, const char *s, ...)
 {
   int r=0;
+#ifdef XDRE_DEBUG
   char msg[MAX_MESSAGE_SIZE];
   int lvl=pri;
 
@@ -348,6 +349,7 @@ int lprintf(OutputLevels pri, const char *s, ...)
   if (!isatty(1) && lvl&cons_error_mask)  /* if stdout redirected     */
     r=fprintf(stderr,"%s",msg);           /* select output at console */
 
+#endif
   return r;
 }
 

@@ -2,6 +2,9 @@
 # Install, and make if needed, prboom.wad
 #
 
+if CROSS_COMPILING
+else
+
 noinst_PROGRAMS = rdatawad
 rdatawad_SOURCES = rd_main.c
 rdatawad_SOURCES += rd_util.c rd_util.h
@@ -450,3 +453,5 @@ prboom-plus.wad : rdatawad $(WAD_SRC)
 
 EXTRA_DIST=$(WAD_SRC)
 CLEANFILES=prboom-plus.wad
+
+endif

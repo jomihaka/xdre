@@ -91,17 +91,18 @@
 
 // e6y
 // It is signature for new savegame format with continuous numbering.
-// Now it is not necessary to add a new level of compatibility in case 
+// Now it is not necessary to add a new level of compatibility in case
 // of need to savegame format change from one minor version to another.
 // The old format is still supported.
 #define NEWFORMATSIG "\xff\xff\xff\xff"
 
-static size_t   savegamesize = SAVEGAMESIZE; // killough
+//static size_t   savegamesize = SAVEGAMESIZE; // killough
+size_t savegamesize = SAVEGAMESIZE;
 static dboolean  netdemo;
 static const byte *demobuffer;   /* cph - only used for playback */
 static int demolength; // check for overrun (missing DEMOMARKER)
 static FILE    *demofp; /* cph - record straight to file */
-//e6y static 
+//e6y static
 const byte *demo_p;
 const byte *demo_continue_p = NULL;
 static short    consistancy[MAXPLAYERS][BACKUPTICS];
@@ -142,7 +143,8 @@ int             demover;
 dboolean         singledemo;           // quit after playing a demo from cmdline
 wbstartstruct_t wminfo;               // parms for world map / intermission
 dboolean         haswolflevels = false;// jff 4/18/98 wolf levels present
-static byte     *savebuffer;          // CPhipps - static
+//static byte     *savebuffer;          // CPhipps - static
+byte            *savebuffer;
 int             autorun = false;      // always running?          // phares
 int             totalleveltimes;      // CPhipps - total time for all completed levels
 int             longtics;
@@ -1098,16 +1100,9 @@ void G_Ticker (void)
         {
           ticcmd_t *cmd = &players[i].cmd;
 
-          memcpy(cmd, &netcmds[i][buf], sizeof *cmd);
+//        memcpy(cmd, &netcmds[i][buf], sizeof *cmd);
+          memcpy(cmd, &netcmds[i], sizeof *cmd);
 
-          //e6y
-          if (democontinue)
-            G_ReadDemoContinueTiccmd (cmd);
-
-          if (demoplayback)
-            G_ReadDemoTiccmd (cmd);
-          if (demorecording)
-            G_WriteDemoTiccmd (cmd);
 
           // check for turbo cheats
           // killough 2/14/98, 2/20/98 -- only warn in netgames and demos
@@ -1130,51 +1125,6 @@ void G_Ticker (void)
                 consistancy[i][buf] = players[i].mo->x;
               else
                 consistancy[i][buf] = 0; // killough 2/14/98
-            }
-        }
-    }
-
-    // check for special buttons
-    for (i=0; i<MAXPLAYERS; i++) {
-      if (playeringame[i])
-        {
-          if (players[i].cmd.buttons & BT_SPECIAL)
-            {
-              switch (players[i].cmd.buttons & BT_SPECIALMASK)
-                {
-                case BTS_PAUSE:
-                  paused ^= 1;
-                  if (paused)
-                    S_PauseSound ();
-                  else
-                    S_ResumeSound ();
-                  break;
-
-                case BTS_SAVEGAME:
-                  if (!savedescription[0])
-                    strcpy(savedescription, "NET GAME");
-                  savegameslot =
-                    (players[i].cmd.buttons & BTS_SAVEMASK)>>BTS_SAVESHIFT;
-                  gameaction = ga_savegame;
-                  break;
-
-      // CPhipps - remote loadgame request
-                case BTS_LOADGAME:
-                  savegameslot =
-                    (players[i].cmd.buttons & BTS_SAVEMASK)>>BTS_SAVESHIFT;
-                  gameaction = ga_loadgame;
-      forced_loadgame = netgame; // Force if a netgame
-      command_loadgame = false;
-                  break;
-
-      // CPhipps - Restart the level
-    case BTS_RESTARTLEVEL:
-                  if (demoplayback || (compatibility_level < lxdoom_1_compatibility))
-                    break;     // CPhipps - Ignore in demos or old games
-      gameaction = ga_loadlevel;
-      break;
-                }
-        players[i].cmd.buttons = 0;
             }
         }
     }
@@ -2081,8 +2031,7 @@ void G_DoLoadGame(void)
   P_MapStart();
   P_UnArchivePlayers ();
   P_UnArchiveWorld ();
-  P_UnArchiveThinkers ();
-  P_UnArchiveSpecials ();
+  P_UnarchiveThinkersAndSpecials ();
   P_UnArchiveRNG ();    // killough 1/18/98: load RNG information
   P_UnArchiveMap ();    // killough 1/22/98: load automap information
   P_MapEnd();
@@ -2161,7 +2110,7 @@ void (CheckSaveGame)(size_t size, const char* file, int line)
 {
   size_t pos = save_p - savebuffer;
 
-#ifdef RANGECHECK
+#if 0 // Doesn't work with xdre modifications
   /* cph 2006/08/07 - after-the-fact sanity checking of CheckSaveGame calls */
   static size_t prev_check;
   static const char* prevf;
@@ -2708,7 +2657,7 @@ void G_ReadOneTick(ticcmd_t* cmd, const byte **data_p)
     cmd->angleturn = (((signed int)(*(*data_p)++))<<8) + lowbyte;
   }
   cmd->buttons = (unsigned char)(*(*data_p)++);
-  
+
   // e6y: ability to play tasdoom demos directly
   if (compatibility_level == tasdoom_compatibility)
   {
@@ -2742,7 +2691,8 @@ void G_ReadDemoTiccmd (ticcmd_t* cmd)
 /* Demo limits removed -- killough
  * cph - record straight to file
  */
-void G_WriteDemoTiccmd (ticcmd_t* cmd)
+//void G_WriteDemoTiccmd (ticcmd_t* cmd)
+void G_WriteDemoTiccmd (ticcmd_t const* cmd, FILE* file)
 {
   char buf[5];
   char *p = buf;
@@ -2768,12 +2718,8 @@ void G_WriteDemoTiccmd (ticcmd_t* cmd)
 
   }//e6y
 
-  if (fwrite(buf, p-buf, 1, demofp) != 1)
+  if (fwrite(buf, p-buf, 1, file) != 1)
     I_Error("G_WriteDemoTiccmd: error writing demo");
-
-  /* cph - alias demo_p to it so we can read it back */
-  demo_p = buf;
-  G_ReadDemoTiccmd (cmd);         // make SURE it is exactly the same
 }
 
 //
@@ -2787,7 +2733,7 @@ void G_RecordDemo (const char* name)
   demoname = malloc(strlen(name)+4+1);
   AddDefaultExtension(strcpy(demoname, name), ".lmp");  // 1/18/98 killough
   demorecording = true;
-  
+
   /* cph - Record demos straight to file
   * If file already exists, try to continue existing demo
   */
@@ -3081,7 +3027,7 @@ void G_BeginRecording (void)
         case prboom_4_compatibility: v = 212; break;
         case prboom_5_compatibility: v = 213; break;
         case prboom_6_compatibility:
-				     v = 214; 
+				     v = 214;
 				     longtics = 1;
 				     break;
         default: I_Error("G_BeginRecording: PrBoom compatibility level unrecognised?");
@@ -3292,7 +3238,7 @@ void G_SaveRestoreGameOptions(int save)
     {1, 0, &dog_jumping},
 #endif
     {1, 0, &monkeys},
-  
+
     {2, 0, (int*)&forceOldBsp},
     {-1, -1, NULL}
   };
@@ -3467,7 +3413,7 @@ const byte* G_ReadDemoHeaderEx(const byte *demo_p, size_t size, unsigned int par
           map = *demo_p++;
           deathmatch = respawnparm = fastparm =
             nomonsters = consoleplayer = 0;
-          
+
           // e6y
           // Ability to force -nomonsters and -respawn for playback of 1.2 demos.
           // Demos recorded with Doom.exe 1.2 did not contain any information
@@ -3610,6 +3556,18 @@ const byte* G_ReadDemoHeaderEx(const byte *demo_p, size_t size, unsigned int par
       netgame = true;
       netdemo = true;
     }
+  else
+    {
+      netgame = false;
+      netdemo = false;
+    }
+
+  if (consoleplayer > MAXPLAYERS - 1)
+    consoleplayer = MAXPLAYERS - 1;
+  for (i=0; i < MAXPLAYERS; ++i)
+    if (playeringame[i] > 1)
+      playeringame[i] = 1;
+
 
   if (!(params&RDH_SKIP_HEADER))
   {
@@ -3642,7 +3600,7 @@ const byte* G_ReadDemoHeaderEx(const byte *demo_p, size_t size, unsigned int par
 
     if (demo_playerscount > 0 && demolength > 0)
     {
-      do        
+      do
       {
         demo_tics_count++;
         p += bytes_per_tic;
@@ -3651,12 +3609,13 @@ const byte* G_ReadDemoHeaderEx(const byte *demo_p, size_t size, unsigned int par
 
       demo_tics_count /= demo_playerscount;
 
-      sprintf(demo_len_st, "\x1b\x35/%d:%02d", 
-        demo_tics_count/TICRATE/60, 
+      sprintf(demo_len_st, "\x1b\x35/%d:%02d",
+        demo_tics_count/TICRATE/60,
         (demo_tics_count%(60*TICRATE))/TICRATE);
     }
   }
 
+  demoplayback = true;
   return demo_p;
 }
 
@@ -3705,7 +3664,7 @@ dboolean G_CheckDemoStatus (void)
     {
       demorecording = false;
       fputc(DEMOMARKER, demofp);
-      
+
       //e6y
       G_WriteDemoFooter(demofp);
 
@@ -3931,7 +3890,7 @@ void G_ReadDemoContinueTiccmd (ticcmd_t* cmd)
   if (!demo_continue_p)
     return;
 
-  if (gametic <= demo_tics_count && 
+  if (gametic <= demo_tics_count &&
     demo_continue_p + bytes_per_tic <= demobuffer + demolength &&
     *demo_continue_p != DEMOMARKER)
   {

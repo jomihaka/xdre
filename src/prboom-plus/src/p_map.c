@@ -829,7 +829,7 @@ dboolean P_CheckPosition (mobj_t* thing,fixed_t x,fixed_t y)
     for (by=yl ; by<=yh ; by++)
       if (!P_BlockLinesIterator (bx,by,PIT_CheckLine))
         return false; // doesn't fit
-  
+
   ClearLinesCrossTracer();//e6y
   return true;
 }
@@ -894,12 +894,12 @@ dboolean P_TryMove(mobj_t* thing,fixed_t x,fixed_t y,
       // e6y
       // Fix demosync bug in mbf compatibility mode
       // There is no more desync on v2-2822.lmp/vrack2.wad
-      // -force_no_dropoff command-line switch is for mbf_compatibility demos 
+      // -force_no_dropoff command-line switch is for mbf_compatibility demos
       // recorded with prboom 2.2.2 - 2.4.7
       // Links:
       // http://competn.doom2.net/pub/sda/t-z/v2-2822.zip
       // http://www.doomworld.com/idgames/index.php?id=11138
-      if ((compatibility || !dropoff 
+      if ((compatibility || !dropoff
             || (!prboom_comp[PC_NO_DROPOFF].state && mbf_features && compatibility_level <= prboom_2_compatibility))
           && (tmfloorz - tmdropoffz > 24*FRACUNIT))
         return false;                      // don't stand over a dropoff
@@ -1197,7 +1197,7 @@ void P_HitSlideLine (line_t* ld)
     icyfloor = !compatibility &&
     variable_friction &&
     slidemo->player &&
-    onground && 
+    onground &&
     slidemo->friction > ORIG_FRICTION;
   }
 
@@ -1762,6 +1762,7 @@ void P_LineAttack
 //
 
 mobj_t*   usething;
+int xUseSuccess;    // not accurate, but useful enough
 
 dboolean PTR_UseTraverse (intercept_t* in)
 {
@@ -1789,7 +1790,10 @@ dboolean PTR_UseTraverse (intercept_t* in)
 
   //  return false;   // don't use back side
 
-  P_UseSpecialLine (usething, in->d.line, side);
+//P_UseSpecialLine (usething, in->d.line, side);
+  if (P_UseSpecialLine(usething, in->d.line, side) && usething->player) {
+    xUseSuccess = 1;
+  }
 
   //WAS can't use for than one special line in a row
   //jff 3/21/98 NOW multiple use allowed with enabling line flag
@@ -1859,9 +1863,9 @@ void P_UseLines (player_t*  player)
 // RADIUS ATTACK
 //
 
-//e6y static 
+//e6y static
 mobj_t *bombsource, *bombspot;
-//e6y static 
+//e6y static
 int bombdamage;
 
 
@@ -2148,7 +2152,7 @@ static msecnode_t *P_GetSecnode(void)
 
   return headsecnode ?
     node = headsecnode, headsecnode = node->m_snext, node :
-  (msecnode_t *)(Z_Malloc(sizeof *node, PU_LEVEL, NULL)); 
+  (msecnode_t *)(Z_Malloc(sizeof *node, PU_LEVEL, NULL));
 }
 
 //
@@ -2405,7 +2409,7 @@ void P_CreateSecNodeList(mobj_t* thing,fixed_t x,fixed_t y)
   }
 }
 
-/* cphipps 2004/08/30 - 
+/* cphipps 2004/08/30 -
  * Must clear tmthing at tic end, as it might contain a pointer to a removed thinker, or the level might have ended/been ended and we clear the objects it was pointing too. Hopefully we don't need to carry this between tics for sync. */
 void P_MapStart(void) {
 	if (tmthing) I_Error("P_MapStart: tmthing set!");

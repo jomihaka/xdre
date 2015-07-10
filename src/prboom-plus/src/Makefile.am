@@ -10,16 +10,10 @@ SUBDIRS = SDL POSIX MAC PCSOUND TEXTSCREEN MUSIC
 
 gamesdir=$(prefix)/games
 
-if BUILD_SERVER
-games_PROGRAMS = prboom-plus prboom-plus-game-server
-else
-games_PROGRAMS = prboom-plus
-endif
+noinst_LIBRARIES = libprboom-plus.a
 
 CFLAGS = @CFLAGS@ @SDL_CFLAGS@
 
-prboom_plus_game_server_SOURCES = d_server.c protocol.h
-prboom_plus_game_server_LDADD = POSIX/libposixdoom.a SDL/i_network.o @NET_LIBS@ @SDL_LIBS@
 
 COMMON_SRC = \
  am_map.c       g_game.c           p_maputl.h       r_plane.h   \
@@ -82,8 +76,7 @@ endif
 
 MUS2MID_SRC = memio.c memio.h mus2mid.c mus2mid.h
 
-prboom_plus_SOURCES = $(COMMON_SRC) $(NET_CLIENT_SRC) $(USE_GL_SRC) $(WAD_SRC) $(MUS2MID_SRC)
-prboom_plus_LDADD = SDL/libsdldoom.a PCSOUND/libpcsound.a TEXTSCREEN/libtextscreen.a MUSIC/libdoommusic.a @MIXER_LIBS@ @NET_LIBS@ @SDL_LIBS@ @GL_LIBS@ @MATH_LIB@
+libprboom_plus_a_SOURCES = $(COMMON_SRC) $(NET_CLIENT_SRC) $(USE_GL_SRC) $(WAD_SRC) $(MUS2MID_SRC)
 
 EXTRA_DIST = \
  r_drawcolumn.inl r_drawflush.inl r_drawspan.inl r_drawcolpipeline.inl icon.c

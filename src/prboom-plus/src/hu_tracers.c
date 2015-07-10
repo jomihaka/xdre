@@ -184,8 +184,13 @@ static int given_damage_pertic_saved[MAXTRACEITEMS];
 static int given_damage_total[MAXTRACEITEMS];
 static int given_damage_processed[MAXTRACEITEMS];
 
+int xDoneDamage;
 void CheckGivenDamageTracer(mobj_t *mobj, int damage)
 {
+  if (mobj->player == &players[displayplayer]) {
+    xDoneDamage += damage;
+  }
+
   if (traces[TRACE_DAMAGE].count)
   {
     int i;

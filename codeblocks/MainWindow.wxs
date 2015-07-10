@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxFrame" name="MainWindow">
+		<centered>1</centered>
+		<size>640,520</size>
+		<minsize>640,520</minsize>
+		<maxsize>640,520</maxsize>
+		<pos_arg>1</pos_arg>
+		<size_arg>1</size_arg>
+		<handler function="OnClose" entry="EVT_CLOSE" />
+		<object class="wxPanel" name="ID_PANEL" variable="panel" member="yes">
+			<style>0</style>
+			<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
+				<label>Rng Index</label>
+				<pos>510,44</pos>
+			</object>
+			<object class="wxStaticText" name="ID_STATICTEXT2" variable="StaticText2" member="yes">
+				<label>Input</label>
+				<pos>534,12</pos>
+				<size>27,16</size>
+			</object>
+			<object class="wxStaticText" name="ID_STATICTEXT3" variable="StaticText3" member="yes">
+				<label>X pos</label>
+				<pos>355,84</pos>
+			</object>
+			<object class="wxStaticText" name="ID_STATICTEXT4" variable="StaticText4" member="yes">
+				<label>Y pos</label>
+				<pos>499,84</pos>
+			</object>
+			<object class="wxStaticText" name="ID_STATICTEXT5" variable="StaticText5" member="yes">
+				<label>X mom</label>
+				<pos>346,116</pos>
+			</object>
+			<object class="wxStaticText" name="ID_STATICTEXT6" variable="StaticText6" member="yes">
+				<label>Y mom</label>
+				<pos>490,116</pos>
+			</object>
+			<object class="wxStaticText" name="ID_STATICTEXT7" variable="StaticText7" member="yes">
+				<label>Distance moved</label>
+				<pos>444,148</pos>
+			</object>
+			<object class="wxStaticText" name="ID_STATICTEXT8" variable="StaticText8" member="yes">
+				<label>Direction moved</label>
+				<pos>441,180</pos>
+			</object>
+			<object class="wxStaticText" name="ID_STATICTEXT9" variable="StaticText9" member="yes">
+				<label>Player angle</label>
+				<pos>465,212</pos>
+			</object>
+			<object class="wxStaticText" name="ID_STATICTEXT10" variable="StaticText10" member="yes">
+				<label>Linedef</label>
+				<pos>380,332</pos>
+			</object>
+			<object class="wxStaticText" name="ID_STATICTEXT11" variable="StaticText11" member="yes">
+				<label>hit special</label>
+				<pos>512,331</pos>
+			</object>
+			<object class="wxStaticText" name="ID_STATICTEXT12" variable="StaticText12" member="yes">
+				<label>Linedef X</label>
+				<pos>442,356</pos>
+			</object>
+			<object class="wxStaticText" name="ID_STATICTEXT13" variable="StaticText13" member="yes">
+				<label>Linedef Y</label>
+				<pos>554,356</pos>
+			</object>
+			<object class="wxStaticText" name="ID_STATICTEXT14" variable="StaticText14" member="yes">
+				<label>v1</label>
+				<pos>407,380</pos>
+			</object>
+			<object class="wxStaticText" name="ID_STATICTEXT15" variable="StaticText15" member="yes">
+				<label>v2</label>
+				<pos>407,404</pos>
+			</object>
+			<object class="wxStaticText" name="ID_STATICTEXT16" variable="StaticText16" member="yes">
+				<label>Distance from line</label>
+				<pos>433,428</pos>
+			</object>
+			<object class="wxStaticText" name="ID_STATICTEXT17" variable="StaticText17" member="yes">
+				<label>Current tic</label>
+				<pos>69,428</pos>
+			</object>
+			<object class="wxStaticText" name="ID_STATICTEXT18" variable="StaticText18" member="yes">
+				<label>Used a line</label>
+				<pos>221,364</pos>
+			</object>
+			<object class="wxStaticText" name="ID_STATICTEXT19" variable="StaticText19" member="yes">
+				<label>Damage done</label>
+				<pos>204,396</pos>
+			</object>
+			<object class="wxStaticText" name="ID_STATICTEXT20" variable="StaticText20" member="yes">
+				<label>Time</label>
+				<pos>251,428</pos>
+			</object>
+			<object class="wxTextCtrl" name="ID_INPUTFIELD" variable="inputField" member="yes">
+				<maxlength>10</maxlength>
+				<pos>568,8</pos>
+				<size>52,21</size>
+				<style>wxTE_RIGHT</style>
+				<handler function="OnInputFieldText" entry="EVT_TEXT" />
+			</object>
+			<object class="wxTextCtrl" name="ID_RNGINDEX" variable="rngIndex" member="yes">
+				<value>0</value>
+				<pos>568,40</pos>
+				<size>52,21</size>
+				<style>wxTE_READONLY|wxTE_RIGHT</style>
+			</object>
+			<object class="wxTextCtrl" name="ID_XPOS" variable="xPos" member="yes">
+				<value>0</value>
+				<pos>392,80</pos>
+				<size>84,21</size>
+				<style>wxTE_READONLY|wxTE_RIGHT</style>
+			</object>
+			<object class="wxTextCtrl" name="ID_YPOS" variable="yPos" member="yes">
+				<value>0</value>
+				<pos>536,80</pos>
+				<size>84,21</size>
+				<style>wxTE_READONLY|wxTE_RIGHT</style>
+			</object>
+			<object class="wxTextCtrl" name="ID_XMOM" variable="xMom" member="yes">
+				<value>0</value>
+				<pos>392,112</pos>
+				<size>84,21</size>
+				<style>wxTE_READONLY|wxTE_RIGHT</style>
+			</object>
+			<object class="wxTextCtrl" name="ID_YMOM" variable="yMom" member="yes">
+				<value>0</value>
+				<pos>536,112</pos>
+				<size>84,21</size>
+				<style>wxTE_READONLY|wxTE_RIGHT</style>
+			</object>
+			<object class="wxTextCtrl" name="ID_DISTANCEMOVED" variable="distanceMoved" member="yes">
+				<value>0</value>
+				<pos>536,144</pos>
+				<size>84,21</size>
+				<style>wxTE_READONLY|wxTE_RIGHT</style>
+			</object>
+			<object class="wxTextCtrl" name="ID_DIRECTIONMOVED" variable="directionMoved" member="yes">
+				<value>0</value>
+				<pos>536,176</pos>
+				<size>84,21</size>
+				<style>wxTE_READONLY|wxTE_RIGHT</style>
+			</object>
+			<object class="wxTextCtrl" name="ID_PLAYERANGLE" variable="playerAngle" member="yes">
+				<value>0</value>
+				<pos>536,208</pos>
+				<size>84,21</size>
+				<style>wxTE_READONLY|wxTE_RIGHT</style>
+			</object>
+			<object class="wxTextCtrl" name="ID_LINEDEFINPUTFIELD" variable="linedefInputField" member="yes">
+				<value>0</value>
+				<maxlength>10</maxlength>
+				<pos>424,328</pos>
+				<size>84,21</size>
+				<validator>wxIntegerValidator&lt;unsigned int&gt;()</validator>
+				<style>wxTE_RIGHT</style>
+				<handler function="OnLinedefInputFieldText" entry="EVT_TEXT" />
+			</object>
+			<object class="wxTextCtrl" name="ID_CROSSED" variable="crossed" member="yes">
+				<value>false</value>
+				<pos>568,328</pos>
+				<size>52,21</size>
+				<style>wxTE_READONLY|wxTE_RIGHT</style>
+			</object>
+			<object class="wxTextCtrl" name="ID_LINEDEFXV1" variable="linedefXV1" member="yes">
+				<value>0</value>
+				<pos>424,376</pos>
+				<size>84,21</size>
+				<style>wxTE_READONLY|wxTE_RIGHT</style>
+			</object>
+			<object class="wxTextCtrl" name="ID_LINEDEFYV1" variable="linedefYV1" member="yes">
+				<value>0</value>
+				<pos>536,376</pos>
+				<size>84,21</size>
+				<style>wxTE_READONLY|wxTE_RIGHT</style>
+			</object>
+			<object class="wxTextCtrl" name="ID_LINEDEFXV2" variable="linedefXV2" member="yes">
+				<value>0</value>
+				<pos>424,400</pos>
+				<size>84,21</size>
+				<style>wxTE_READONLY|wxTE_RIGHT</style>
+			</object>
+			<object class="wxTextCtrl" name="ID_LINEDEFYV2" variable="linedefYV2" member="yes">
+				<value>0</value>
+				<pos>536,400</pos>
+				<size>84,21</size>
+				<style>wxTE_READONLY|wxTE_RIGHT</style>
+			</object>
+			<object class="wxTextCtrl" name="ID_DISTANCEFROMLINE" variable="distanceFromLine" member="yes">
+				<value>0</value>
+				<pos>536,424</pos>
+				<size>84,21</size>
+				<style>wxTE_READONLY|wxTE_RIGHT</style>
+			</object>
+			<object class="wxCheckBox" name="ID_NOBLOODBOX" variable="noBloodBox" member="yes">
+				<label>No blood</label>
+				<pos>536,248</pos>
+				<handler function="OnBloodBoxClick" entry="EVT_CHECKBOX" />
+			</object>
+			<object class="wxTextCtrl" name="ID_USESUCCESS" variable="useSuccess" member="yes">
+				<value>false</value>
+				<pos>284,360</pos>
+				<size>68,21</size>
+				<style>wxTE_READONLY|wxTE_RIGHT</style>
+			</object>
+			<object class="wxTextCtrl" name="ID_DAMAGEDONE" variable="damageDone" member="yes">
+				<value>0</value>
+				<pos>284,392</pos>
+				<size>68,21</size>
+				<style>wxTE_READONLY|wxTE_RIGHT</style>
+			</object>
+			<object class="wxTextCtrl" name="ID_TIME" variable="time" member="yes">
+				<value>0</value>
+				<pos>284,424</pos>
+				<size>68,21</size>
+				<style>wxTE_READONLY|wxTE_RIGHT</style>
+			</object>
+			<object class="wxTextCtrl" name="ID_CURRENTTIC" variable="currentTic" member="yes">
+				<value>0</value>
+				<pos>132,424</pos>
+				<size>68,21</size>
+				<style>wxTE_READONLY|wxTE_RIGHT</style>
+			</object>
+			<object class="Custom" name="ID_TICLIST" subclass="TiclistCtrl" variable="ticlist" member="yes">
+				<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID),$(POS),$(SIZE),$(NAME));</creating_code>
+				<include_file>TiclistCtrl.hpp</include_file>
+				<local_include>1</local_include>
+				<style></style>
+				<pos>16,16</pos>
+				<size>184,368</size>
+			</object>
+			<object class="wxStaticText" name="ID_STATICTEXT21" variable="StaticText21" member="yes">
+				<label>Savepoint</label>
+				<pos>72,396</pos>
+			</object>
+			<object class="wxTextCtrl" name="ID_SAVEPOINTTIC" variable="savepointTic" member="yes">
+				<value>0</value>
+				<pos>132,392</pos>
+				<size>68,21</size>
+				<style>wxTE_READONLY|wxTE_RIGHT</style>
+			</object>
+			<object class="wxChoice" name="ID_STYLECHOICE" variable="styleChoice" member="yes">
+				<content>
+					<item>User</item>
+					<item>Start</item>
+					<item>Auto</item>
+				</content>
+				<selection>0</selection>
+				<pos>16,392</pos>
+				<size>48,21</size>
+				<handler function="OnStyleChoiceSelect" entry="EVT_CHOICE" />
+			</object>
+		</object>
+		<object class="wxMenuBar" variable="menuBar" member="yes">
+			<object class="wxMenu" variable="menuFile" member="yes">
+				<label>File</label>
+				<object class="wxMenuItem" name="IDM_LOAD" variable="MenuItem1" member="yes">
+					<label>Load...</label>
+					<handler function="OnMenuLoad" entry="EVT_MENU" />
+				</object>
+				<object class="wxMenuItem" name="IDM_SAVE" variable="MenuItem2" member="yes">
+					<label>Save...</label>
+					<handler function="OnMenuSave" entry="EVT_MENU" />
+				</object>
+				<object class="wxMenuItem" name="IDM_EXIT" variable="MenuItem3" member="yes">
+					<label>Exit</label>
+					<handler function="OnMenuExit" entry="EVT_MENU" />
+				</object>
+			</object>
+			<object class="wxMenu" variable="menuTools" member="yes">
+				<label>Tools</label>
+				<object class="wxMenuItem" name="IDM_BRUTE" variable="MenuItem4" member="yes">
+					<label>Bruteforce...</label>
+					<handler function="OnMenuBrute" entry="EVT_MENU" />
+				</object>
+			</object>
+			<object class="wxMenu" variable="menuOptions" member="yes">
+				<label>Options</label>
+				<object class="wxMenuItem" name="IDM_SETKEYS" variable="MenuItem5" member="yes">
+					<label>Set keys...</label>
+					<enabled>0</enabled>
+					<handler function="OnMenuSetKeys" entry="EVT_MENU" />
+				</object>
+			</object>
+			<object class="wxMenu" variable="Menu1" member="yes">
+				<label>Demo</label>
+				<object class="wxMenuItem" name="IDM_HEADER" variable="MenuItem6" member="yes">
+					<label>Header...</label>
+					<enabled>0</enabled>
+					<handler function="OnMenuHeader" entry="EVT_MENU" />
+				</object>
+			</object>
+		</object>
+	</object>
+</wxsmith>

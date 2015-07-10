@@ -74,7 +74,8 @@
 static dboolean   server;
 static int       remotetic; // Tic expected from the remote
 static int       remotesend; // Tic expected by the remote
-ticcmd_t         netcmds[MAXPLAYERS][BACKUPTICS];
+//ticcmd_t         netcmds[MAXPLAYERS][BACKUPTICS];
+ticcmd_t         netcmds[MAXPLAYERS];
 static ticcmd_t* localcmds;
 static unsigned          numqueuedpackets;
 static packet_header_t** queuedpacket;
@@ -118,7 +119,7 @@ void D_InitNetGame (void)
 
     do
     {
-      do { 
+      do {
 	// Send init packet
 	initpacket.pn = doom_htons(wanted_player_number);
 	packet_set(&initpacket.head, PKT_INIT, 0);
@@ -171,7 +172,7 @@ void D_InitNetGame (void)
   doomcom = Z_Malloc(sizeof *doomcom, PU_STATIC, NULL);
   doomcom->consoleplayer = 0;
   doomcom->numnodes = 0; doomcom->numplayers = 1;
-  localcmds = netcmds[consoleplayer];
+//localcmds = netcmds[consoleplayer];
   netgame = (M_CheckParm("-solo-net") != 0);
 
   for (i=0; i<doomcom->numplayers; i++)
@@ -340,9 +341,9 @@ void NetUpdate(void)
     while (newtics--) {
       I_StartTic();
       if (maketic - gametic > BACKUPTICS/2) break;
-      
+
       // e6y
-      // Eliminating the sudden jump of six frames(BACKUPTICS/2) 
+      // Eliminating the sudden jump of six frames(BACKUPTICS/2)
       // after change of realtic_clock_rate.
       if (maketic - gametic && gametic <= force_singletics_to && realtic_clock_rate < 200) break;
 

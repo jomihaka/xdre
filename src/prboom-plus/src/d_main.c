@@ -155,7 +155,7 @@ const char *const standard_iwads[]=
   "bfgdoom2.wad",
   "bfgdoom.wad",
 };
-//e6y static 
+//e6y static
 const int nstandard_iwads = sizeof standard_iwads/sizeof*standard_iwads;
 
 /*
@@ -163,7 +163,7 @@ const int nstandard_iwads = sizeof standard_iwads/sizeof*standard_iwads;
  *
  * Called by I/O functions when an event is received.
  * Try event handlers for each code area in turn.
- * cph - in the true spirit of the Boom source, let the 
+ * cph - in the true spirit of the Boom source, let the
  *  short ciruit operator madness begin!
  */
 
@@ -171,7 +171,7 @@ void D_PostEvent(event_t *ev)
 {
   /* cph - suppress all input events at game start
    * FIXME: This is a lousy kludge */
-  
+
   // e6y
   // Is this condition needed here?
   // Moved to I_StartTic()
@@ -274,7 +274,7 @@ void D_Display (void)
     }
 #endif
   }
-  
+
   if (!doSkip || !gamekeydown[key_use])
 
   if (nodrawers)                    // for comparative timing / profiling
@@ -289,7 +289,8 @@ void D_Display (void)
   }
 
   // save the current screen if about to wipe
-  if ((wipe = (gamestate != wipegamestate)))
+//if ((wipe = (gamestate != wipegamestate)))
+  if (wipe = 0)
   {
     wipe_StartScreen();
     R_ResetViewInterpolation();
@@ -340,7 +341,7 @@ void D_Display (void)
       // e6y
       // I should do it because I call R_RenderPlayerView in all cases,
       // not only if viewactive is true
-      borderwillneedredraw = (borderwillneedredraw) || 
+      borderwillneedredraw = (borderwillneedredraw) ||
         (((automapmode & am_active) && !(automapmode & am_overlay)));
     }
     if (redrawborderstuff || (V_GetMode() == VID_MODEGL))
@@ -402,10 +403,10 @@ void D_Display (void)
 #ifdef HAVE_NET
   NetUpdate();         // send out any new accumulation
 #else
-  D_BuildNewTiccmds();
+//D_BuildNewTiccmds();
 #endif
 
-  HU_DrawDemoProgress(true); //e6y
+//HU_DrawDemoProgress(true); //e6y
 
   // normal update
   if (!wipe)
@@ -419,7 +420,7 @@ void D_Display (void)
   // e6y
   // Don't thrash cpu during pausing or if the window doesnt have focus
   if ( (paused && !walkcamera.type) || (!window_focused) ) {
-    I_uSleep(5000);
+//  I_uSleep(5000);
   }
 
   I_EndDisplay();
@@ -455,7 +456,7 @@ static void D_DoomLoop(void)
       if (singletics)
         {
           I_StartTic ();
-          G_BuildTiccmd (&netcmds[consoleplayer][maketic%BACKUPTICS]);
+//        G_BuildTiccmd (&netcmds[consoleplayer][maketic%BACKUPTICS]);
           if (advancedemo)
             D_DoAdvanceDemo ();
           M_Ticker ();
@@ -727,7 +728,7 @@ void D_AddFile (const char *file, wad_source_t source)
 
 // killough 10/98: support -dehout filename
 // cph - made const, don't cache results
-//e6y static 
+//e6y static
 const char *D_dehout(void)
 {
   int p = M_CheckParm("-dehout");
@@ -749,7 +750,7 @@ const char *D_dehout(void)
 // jff 4/19/98 Add routine to test IWAD for validity and determine
 // the gamemode from it. Also note if DOOM II, whether secret levels exist
 // CPhipps - const char* for iwadname, made static
-//e6y static 
+//e6y static
 void CheckIWAD(const char *iwadname,GameMode_t *gmode,dboolean *hassec)
 {
   if ( !access (iwadname,R_OK) )
@@ -1113,14 +1114,14 @@ static void FindResponseFile (void)
 	    if (size > 0) {
 	      char *s = malloc(size+1);
 	      char *p = s;
-	      int quoted = 0; 
+	      int quoted = 0;
 
 	      while (size > 0) {
 		// Whitespace terminates the token unless quoted
 		if (!quoted && isspace(*infile)) break;
 		if (*infile == '\"') {
 		  // Quotes are removed but remembered
-		  infile++; size--; quoted ^= 1; 
+		  infile++; size--; quoted ^= 1;
 		} else {
 		  *p++ = *infile++; size--;
 		}
@@ -1235,7 +1236,7 @@ static void DoLooseFiles(void)
 
     // so now we must have a loose file.  Find out what kind and store it.
     arglen = strlen(myargv[i]);
-    
+
     k = 0;
     while (looses[k].ext)
     {
@@ -1477,35 +1478,17 @@ static void D_DoomMainSetup(void)
     //jff 9/3/98 use logical output routine
     lprintf(LO_CONFIRM,"%s",D_DEVSTR);
 
-  // turbo option
-  if ((p=M_CheckParm ("-turbo")))
-    {
-      int scale = 200;
-      extern int forwardmove[2];
-      extern int sidemove[2];
-
-      if (p<myargc-1)
-        scale = atoi(myargv[p+1]);
-      if (scale < 10)
-        scale = 10;
-      if (scale > 400)
-        scale = 400;
-      //jff 9/3/98 use logical output routine
-      lprintf (LO_CONFIRM,"turbo scale: %i%%\n",scale);
-      forwardmove[0] = forwardmove[0]*scale/100;
-      forwardmove[1] = forwardmove[1]*scale/100;
-      sidemove[0] = sidemove[0]*scale/100;
-      sidemove[1] = sidemove[1]*scale/100;
-    }
 
   modifiedgame = false;
 
   // get skill / episode / map from parms
 
-  startskill = sk_none; // jff 3/24/98 was sk_medium, just note not picked
+//startskill = sk_none; // jff 3/24/98 was sk_medium, just note not picked
+  startskill = sk_medium;
   startepisode = 1;
   startmap = 1;
-  autostart = false;
+//autostart = false;
+  autostart = true;
 
   if ((p = M_CheckParm ("-skill")) && p < myargc-1)
     {
@@ -1519,17 +1502,6 @@ static void D_DoomMainSetup(void)
       startmap = 1;
       autostart = true;
     }
-
-  if ((p = M_CheckParm ("-timer")) && p < myargc-1 && deathmatch)
-    {
-      int time = atoi(myargv[p+1]);
-      //jff 9/3/98 use logical output routine
-      lprintf(LO_CONFIRM,"Levels will end after %d minute%s.\n", time, time>1 ? "s" : "");
-    }
-
-  if ((p = M_CheckParm ("-avg")) && p < myargc-1 && deathmatch)
-    //jff 9/3/98 use logical output routine
-    lprintf(LO_CONFIRM,"Austin Virtual Gaming: Levels will end after 20 minutes\n");
 
   if ((p = M_CheckParm ("-warp")) ||      // killough 5/2/98
        (p = M_CheckParm ("-wart")))
@@ -1565,7 +1537,8 @@ static void D_DoomMainSetup(void)
 
   //jff 1/22/98 add command line parms to disable sound and music
   {
-    int nosound = M_CheckParm("-nosound");
+//  int nosound = M_CheckParm("-nosound");
+    int nosound = true;
     nomusicparm = nosound || M_CheckParm("-nomusic");
     nosfxparm   = nosound || M_CheckParm("-nosfx");
   }
@@ -1656,36 +1629,6 @@ static void D_DoomMainSetup(void)
       }
     }
 
-  if (!(p = M_CheckParm("-playdemo")) || p >= myargc-1) {   /* killough */
-    if ((p = M_CheckParm ("-fastdemo")) && p < myargc-1)    /* killough */
-      fastdemo = true;             // run at fastest speed possible
-    else
-    {
-      if ((p = IsDemoContinue()))
-      {
-        democontinue = true;
-        AddDefaultExtension(strcpy(democontinuename, myargv[p + 2]), ".lmp");
-      }
-      else
-      {
-        p = M_CheckParm ("-timedemo");
-      }
-    }
-  }
-
-  if (p && p < myargc-1)
-    {
-      char *file = malloc(strlen(myargv[p+1])+4+1); // cph - localised
-      strcpy(file,myargv[p+1]);
-      AddDefaultExtension(file,".lmp");     // killough
-      D_AddFile (file,source_lmp);
-      //jff 9/3/98 use logical output routine
-      lprintf(LO_CONFIRM,"Playing demo %s\n",file);
-      if ((p = M_CheckParm ("-ffmap")) && p < myargc-1) {
-        ffmap = atoi(myargv[p+1]);
-      }
-      free(file);
-    }
 
   // internal translucency set to config file value               // phares
   general_translucency = default_translucency;                    // phares
@@ -1714,7 +1657,7 @@ static void D_DoomMainSetup(void)
 
   lprintf(LO_INFO,"\n");     // killough 3/6/98: add a newline, by popular demand :)
 
-  // e6y 
+  // e6y
   // option to disable automatic loading of dehacked-in-wad lump
   if (!M_CheckParm ("-nodeh"))
   {
@@ -1862,93 +1805,14 @@ static void D_DoomMainSetup(void)
   if (!(M_CheckParm("-nodraw") && M_CheckParm("-nosound")))
     I_InitGraphics();
 
-  // NSM
-  if ((p = M_CheckParm("-viddump")) && (p < myargc-1))
-  {
-    I_CapturePrep(myargv[p + 1]);
-  }
 
   //jff 9/3/98 use logical output routine
   lprintf(LO_INFO,"ST_Init: Init status bar.\n");
   ST_Init();
 
-  // CPhipps - auto screenshots
-  if ((p = M_CheckParm("-autoshot")) && (p < myargc-2))
-    if ((auto_shot_count = auto_shot_time = atoi(myargv[p+1])))
-      auto_shot_fname = myargv[p+2];
-
-  // start the apropriate game based on parms
-
-  // killough 12/98:
-  // Support -loadgame with -record and reimplement -recordfrom.
-
-  if ((slot = M_CheckParm("-recordfrom")) && (p = slot+2) < myargc)
-    G_RecordDemo(myargv[p]);
-  else
-    {
-      slot = M_CheckParm("-loadgame");
-      if ((p = M_CheckParm("-record")) && ++p < myargc)
-  {
-    autostart = true;
-    G_RecordDemo(myargv[p]);
-  }
-    }
-
-  if ((p = M_CheckParm ("-checksum")) && ++p < myargc)
-    {
-      P_RecordChecksum (myargv[p]);
-    }
-
-  if ((p = M_CheckParm ("-fastdemo")) && ++p < myargc)
-    {                                 // killough
-      fastdemo = true;                // run at fastest speed possible
-      timingdemo = true;              // show stats after quit
-      G_DeferedPlayDemo(myargv[p]);
-      singledemo = true;              // quit after one demo
-    }
-  else
-    if ((p = M_CheckParm("-timedemo")) && ++p < myargc)
-      {
-  singletics = true;
-  timingdemo = true;            // show stats after quit
-  G_DeferedPlayDemo(myargv[p]);
-  singledemo = true;            // quit after one demo
-      }
-    else
-      if ((p = M_CheckParm("-playdemo")) && ++p < myargc)
-  {
-    G_DeferedPlayDemo(myargv[p]);
-    singledemo = true;          // quit after one demo
-  }
-  else
-    //e6y
-    if ((p = IsDemoContinue()))
-    {
-      G_DeferedPlayDemo(myargv[p+1]);
-      G_CheckDemoContinue();
-    }
-
-  if (slot && ++slot < myargc)
-    {
-      slot = atoi(myargv[slot]);        // killough 3/16/98: add slot info
-      G_LoadGame(slot, true);           // killough 5/15/98: add command flag // cph - no filename
-    }
-  else
-    if (!singledemo) {                  /* killough 12/98 */
-      if (autostart || netgame)
-  {
-    // sets first map and first episode if unknown
-    if (autostart)
-    {
-      GetFirstMap(&startepisode, &startmap);
-    }
-    G_InitNew(startskill, startepisode, startmap);
-    if (demorecording)
-      G_BeginRecording();
-  }
-      else
-  D_StartTitle();                 // start up intro loop
-    }
+  fastdemo = true;
+  GetFirstMap(&startepisode, &startmap);
+  G_InitNew(startskill, startepisode, startmap);
 
   // do not try to interpolate during timedemo
   M_ChangeUncappedFrameRate();
@@ -1961,8 +1825,6 @@ static void D_DoomMainSetup(void)
 void D_DoomMain(void)
 {
   D_DoomMainSetup(); // CPhipps - setup out of main execution stack
-
-  D_DoomLoop ();  // never returns
 }
 
 //

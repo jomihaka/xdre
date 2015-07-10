@@ -73,7 +73,8 @@ void D_Display(void);
 
 void M_ChangeUncappedFrameRate(void)
 {
-  movement_smooth = (singletics ? false : movement_smooth_default);
+//movement_smooth = (singletics ? false : movement_smooth_default);
+  movement_smooth = false;
 }
 
 void R_InitInterpolation(void)
@@ -328,7 +329,7 @@ static void R_SetInterpolation(interpolation_type_e type, void *posptr)
   int *i;
   if (!movement_smooth)
     return;
-  
+
   if (numinterpolations >= interpolations_max) {
     int prevmax = interpolations_max;
 
@@ -343,12 +344,12 @@ static void R_SetInterpolation(interpolation_type_e type, void *posptr)
     {
       return;
     }
-    
+
     oldipos = (fixed2_t*)realloc(oldipos, sizeof(*oldipos) * interpolations_max);
     bakipos = (fixed2_t*)realloc(bakipos, sizeof(*bakipos) * interpolations_max);
     curipos = (interpolation_t*)realloc(curipos, sizeof(*curipos) * interpolations_max);
   }
-  
+
   i = NULL;
   switch (type)
   {
@@ -377,7 +378,7 @@ static void R_SetInterpolation(interpolation_type_e type, void *posptr)
     numinterpolations++;
     (*i) = numinterpolations;
   }
-} 
+}
 
 static void R_StopInterpolation(interpolation_type_e type, void *posptr)
 {
@@ -454,7 +455,7 @@ static void R_StopInterpolation(interpolation_type_e type, void *posptr)
 void R_StopAllInterpolations(void)
 {
   int i;
-  
+
   if (!movement_smooth)
     return;
 
@@ -485,7 +486,7 @@ void R_StopAllInterpolations(void)
 void R_RestoreInterpolations(void)
 {
   int i;
-  
+
   if (!movement_smooth)
     return;
 
@@ -590,7 +591,7 @@ void R_ActivateThinkerInterpolations(thinker_t *th)
   if(posptr1)
   {
     R_SetInterpolation (type1, posptr1);
-    
+
     if(posptr2)
       R_SetInterpolation (type2, posptr2);
   }

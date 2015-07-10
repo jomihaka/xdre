@@ -210,7 +210,7 @@ static int I_TranslateKey(SDL_keysym* key)
 // Main input code
 
 /* cph - pulled out common button code logic */
-//e6y static 
+//e6y static
 int I_SDLtoDoomMouseState(Uint8 buttonstate)
 {
   return 0
@@ -271,14 +271,14 @@ while (SDL_PollEvent(Event))
 #endif
     event.type = ev_keydown;
     event.data1 = I_TranslateKey(&Event->key.keysym);
-    D_PostEvent(&event);
+//  D_PostEvent(&event);
     break;
 
   case SDL_KEYUP:
   {
     event.type = ev_keyup;
     event.data1 = I_TranslateKey(&Event->key.keysym);
-    D_PostEvent(&event);
+//  D_PostEvent(&event);
   }
   break;
 
@@ -307,7 +307,7 @@ while (SDL_PollEvent(Event))
       }
     }
 
-    D_PostEvent(&event);
+//  D_PostEvent(&event);
   }
   break;
 
@@ -315,7 +315,7 @@ while (SDL_PollEvent(Event))
   case SDL_ACTIVEEVENT:
     UpdateFocus();
     break;
-  
+
   case SDL_VIDEORESIZE:
     ApplyWindowResize(Event);
     break;
@@ -333,7 +333,7 @@ while (SDL_PollEvent(Event))
   {
     event.type = ev_keyup;
     event.data1 = KEYD_MWHEELUP;
-    D_PostEvent(&event);
+//  D_PostEvent(&event);
     mwheeluptic = 0;
   }
 
@@ -341,7 +341,7 @@ while (SDL_PollEvent(Event))
   {
     event.type = ev_keyup;
     event.data1 = KEYD_MWHEELDOWN;
-    D_PostEvent(&event);
+//  D_PostEvent(&event);
     mwheeldowntic = 0;
   }
 }
@@ -354,9 +354,9 @@ void I_StartTic (void)
 {
   I_GetEvent();
 
-  I_ReadMouse();
+//I_ReadMouse();
 
-  I_PollJoystick();
+//I_PollJoystick();
 }
 
 //
@@ -377,8 +377,9 @@ static void I_InitInputs(void)
   int nomouse_parm = M_CheckParm("-nomouse");
 
   // check if the user wants to use the mouse
-  mouse_enabled = usemouse && !nomouse_parm;
-  
+//mouse_enabled = usemouse && !nomouse_parm;
+  mouse_enabled = false;
+
   SDL_PumpEvents();
 
   // Save the default cursor so it can be recalled later
@@ -628,9 +629,9 @@ void I_PreInitGraphics(void)
 #endif
 
   // e6y: Forcing "directx" video driver for Win9x.
-  // The "windib" video driver is the default for SDL > 1.2.9, 
-  // to prevent problems with certain laptops, 64-bit Windows, and Windows Vista.  
-  // The DirectX driver is still available, and can be selected by setting 
+  // The "windib" video driver is the default for SDL > 1.2.9,
+  // to prevent problems with certain laptops, 64-bit Windows, and Windows Vista.
+  // The DirectX driver is still available, and can be selected by setting
   // the environment variable SDL_VIDEODRIVER to "directx".
 
   if ((p = M_CheckParm("-videodriver")) && (p < myargc - 1))
@@ -781,7 +782,7 @@ static void I_FillScreenResolutionsList(void)
       {
         screen_resolution_lowest = strdup(mode);
       }
-      
+
       for(j = 0; j < list_size; j++)
       {
         if (!strcmp(mode, screen_resolutions_list[j]))
@@ -805,7 +806,7 @@ static void I_FillScreenResolutionsList(void)
     }
     screen_resolutions_list[list_size] = NULL;
   }
-  
+
   if (list_size == 0)
   {
     doom_snprintf(mode, sizeof(mode), "%dx%d", desired_screenwidth, desired_screenheight);
@@ -869,7 +870,7 @@ static void I_ClosestResolution (int *width, int *height, int flags)
       //if (iteration == 0 && (twidth < *width || theight < *height))
       //  continue;
 
-      dist = (twidth - *width) * (twidth - *width) + 
+      dist = (twidth - *width) * (twidth - *width) +
              (theight - *height) * (theight - *height);
 
       if (dist < closest)
@@ -886,7 +887,7 @@ static void I_ClosestResolution (int *width, int *height, int flags)
       return;
     }
   }
-}  
+}
 
 int process_affinity_mask;
 int process_priority;
@@ -899,7 +900,7 @@ unsigned int I_TestCPUCacheMisses(int width, int height, unsigned int mintime)
   int i, k;
   char *s, *d, *ps, *pd;
   unsigned int tickStart;
-  
+
   s = malloc(width * height);
   d = malloc(width * height);
 
@@ -931,7 +932,7 @@ unsigned int I_TestCPUCacheMisses(int width, int height, unsigned int mintime)
 void I_CalculateRes(int width, int height)
 {
 // e6y
-// GLBoom will try to set the closest supported resolution 
+// GLBoom will try to set the closest supported resolution
 // if the requested mode can't be set correctly.
 // For example glboom.exe -geom 1025x768 -nowindow will set 1024x768.
 // It affects only fullscreen modes.
@@ -1022,7 +1023,7 @@ void I_InitScreenResolution(void)
       use_fullscreen = 0;
 
     // e6y
-    // New command-line options for setting a window (-window) 
+    // New command-line options for setting a window (-window)
     // or fullscreen (-nowindow) mode temporarily which is not saved in cfg.
     // It works like "-geom" switch
     desired_fullscreen = use_fullscreen;
@@ -1076,7 +1077,7 @@ void I_InitScreenResolution(void)
   {
     mode = I_GetModeFromString(myargv[i+1]);
   }
-  
+
   V_InitMode(mode);
 
   I_CalculateRes(w, h);
@@ -1104,7 +1105,7 @@ void I_InitScreenResolution(void)
   lprintf(LO_INFO,"I_InitScreenResolution: Using resolution %dx%d\n", REAL_SCREENWIDTH, REAL_SCREENHEIGHT);
 }
 
-// 
+//
 // Set the window caption
 //
 
@@ -1121,9 +1122,9 @@ void I_SetWindowCaption(void)
   free(buf);
 }
 
-// 
+//
 // Set the application icon
-// 
+//
 
 #include "icon.c"
 
@@ -1504,7 +1505,7 @@ static void I_ReadMouse(void)
 
   SDL_GetRelativeMouseState(&x, &y);
 
-  if (x != 0 || y != 0) 
+  if (x != 0 || y != 0)
   {
     ev.type = ev_mouse;
     ev.data1 = I_SDLtoDoomMouseState(SDL_GetMouseState(NULL, NULL));
@@ -1528,7 +1529,7 @@ static dboolean MouseShouldBeGrabbed()
   if (!window_focused)
     return false;
 
-  // always grab the mouse when full screen (dont want to 
+  // always grab the mouse when full screen (dont want to
   // see the mouse pointer)
   if (desired_fullscreen)
     return true;
@@ -1537,12 +1538,12 @@ static dboolean MouseShouldBeGrabbed()
   if (!mouse_enabled)
     return false;
 
-  // always grab the mouse in camera mode when playing levels 
+  // always grab the mouse in camera mode when playing levels
   // and menu is not active
   if (walkcamera.type)
     return (demoplayback && gamestate == GS_LEVEL && !menuactive);
 
-  // when menu is active or game is paused, release the mouse 
+  // when menu is active or game is paused, release the mouse
   if (menuactive || paused)
     return false;
 
@@ -1561,7 +1562,7 @@ static void UpdateFocus(void)
 
   state = SDL_GetAppState();
 
-  // We should have input (keyboard) focus and be visible 
+  // We should have input (keyboard) focus and be visible
   // (not minimised)
   window_focused = (state & SDL_APPINPUTFOCUS) && (state & SDL_APPACTIVE);
 

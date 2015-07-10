@@ -210,7 +210,7 @@ HWND WIN32_GetHWND(void);
 #endif
 //--------------------------------------------------
 
-void e6y_assert(const char *format, ...) 
+void e6y_assert(const char *format, ...)
 {
   static FILE *f = NULL;
   va_list argptr;
@@ -223,19 +223,19 @@ void e6y_assert(const char *format, ...)
 }
 
 /* ParamsMatchingCheck
- * Conflicting command-line parameters could cause the engine to be confused 
+ * Conflicting command-line parameters could cause the engine to be confused
  * in some cases. Added checks to prevent this.
  * Example: glboom.exe -record mydemo -playdemo demoname
  */
 void ParamsMatchingCheck()
 {
-  dboolean recording_attempt = 
-    M_CheckParm("-record") || 
+  dboolean recording_attempt =
+    M_CheckParm("-record") ||
     M_CheckParm("-recordfrom") ||
     M_CheckParm("-recordfromto");
-  
-  dboolean playbacking_attempt = 
-    M_CheckParm("-playdemo") || 
+
+  dboolean playbacking_attempt =
+    M_CheckParm("-playdemo") ||
     M_CheckParm("-timedemo") ||
     M_CheckParm("-fastdemo");
 
@@ -274,20 +274,6 @@ void e6y_InitCommandLine(void)
 {
   int p;
 
-  if ((p = M_CheckParm("-skipsec")) && (p < myargc-1))
-  {
-    float min, sec;
-
-    if (sscanf(myargv[p+1], "%f:%f", &min, &sec) == 2)
-      demo_skiptics = (int) ((60 * min + sec) * TICRATE);
-    else if (sscanf(myargv[p+1], "%f", &sec) == 1)
-      demo_skiptics = (int) (sec * TICRATE);
-  }
-
-  if ((IsDemoPlayback() || IsDemoContinue()) && (startmap > 1 || demo_skiptics))
-    G_SkipDemoStart();
-  if ((p = M_CheckParm("-avidemo")) && (p < myargc-1))
-    avi_shot_fname = myargv[p + 1];
   stats_level = M_CheckParm("-levelstat");
 
   // TAS-tracers
@@ -311,7 +297,7 @@ void G_SkipDemoStart(void)
   saved_render_precise = render_precise;
 
   paused = false;
-  
+
   doSkip = true;
 
   S_StopMusic();
@@ -334,7 +320,7 @@ void G_SkipDemoStop(void)
   nodrawers = saved_nodrawers;
   nosfxparm = saved_nosfxparm;
   nomusicparm = saved_nomusicparm;
-  
+
   render_precise = saved_render_precise;
   M_ChangeRenderPrecise();
 
@@ -365,7 +351,7 @@ void G_SkipDemoCheck(void)
 {
   if (doSkip && gametic > 0)
   {
-    if (((startmap <= 1) && 
+    if (((startmap <= 1) &&
          (gametic > demo_skiptics + (demo_skiptics > 0 ? 0 : demo_tics_count))) ||
         (demo_warp && gametic - levelstarttic > demo_skiptics))
      {
@@ -409,7 +395,7 @@ int G_GotoNextLevel(void)
 
   // secret level
   doom2_next[14] = (haswolflevels ? 31 : 16);
-  
+
   if (bfgedition && singleplayer)
     if (gamemission == pack_nerve)
     {
@@ -422,12 +408,12 @@ int G_GotoNextLevel(void)
 
   // shareware doom has only episode 1
   doom_next[0][7] = (gamemode == shareware ? 11 : 21);
-  
+
   doom_next[2][7] = ((gamemode == registered) ||
     // the fourth episode for pre-ultimate complevels is not allowed.
     (compatibility_level < ultdoom_compatibility) ?
     11 : 41);
-  
+
   if ((gamestate == GS_LEVEL) &&
       !deathmatch && !netgame &&
       !demorecording && !demoplayback &&
@@ -482,7 +468,7 @@ void M_ChangeMouseInvert(void)
 void M_ChangeMaxViewPitch(void)
 {
   int max_up, max_dn, angle_up, angle_dn;
-  
+
   if (V_GetMode() == VID_MODEGL)
   {
     max_up = movement_maxviewpitch;
@@ -726,12 +712,12 @@ int StepwiseSum(int value, int direction, int step, int minval, int maxval, int 
 
   int newvalue;
   int val = (direction > 0 ? value : value - 1);
-  
+
   if (direction == 0)
     return defval;
 
   direction = (direction > 0 ? 1 : -1);
-  
+
   if (step != 0)
     newvalue = (prev_direction * direction < 0 ? prev_value : value + direction * step);
   else
@@ -809,7 +795,7 @@ int I_MessageBox(const char* text, unsigned int type)
 
     int i, c;
     char* hotkeys_str = NULL;
-    
+
     type &= 0x000000ff;
 
     i = 0;
@@ -895,7 +881,7 @@ void e6y_G_DoCompleted(void)
       stats[numlevels].kill[i]   = players[i].killcount - players[i].resurectedkillcount;
       stats[numlevels].item[i]   = players[i].itemcount;
       stats[numlevels].secret[i] = players[i].secretcount;
-      
+
       stats[numlevels].stat[TT_ALLKILL]   += stats[numlevels].kill[i];
       stats[numlevels].stat[TT_ALLITEM]   += stats[numlevels].item[i];
       stats[numlevels].stat[TT_ALLSECRET] += stats[numlevels].secret[i];
@@ -925,7 +911,7 @@ void e6y_WriteStats(void)
   size_t allkills_len=0, allitems_len=0, allsecrets_len=0;
 
   f = fopen("levelstat.txt", "wb");
-  
+
   memset(&max, 0, sizeof(timetable_t));
 
   playerscount = 0;
@@ -945,10 +931,10 @@ void e6y_WriteStats(void)
 
         doom_snprintf(strtmp, sizeof(strtmp), str, tmp.kill, stats[level].kill[i]);
         strcpy(tmp.kill, strtmp);
-        
+
         doom_snprintf(strtmp, sizeof(strtmp), str, tmp.item, stats[level].item[i]);
         strcpy(tmp.item, strtmp);
-        
+
         doom_snprintf(strtmp, sizeof(strtmp), str, tmp.secret, stats[level].secret[i]);
         strcpy(tmp.secret, strtmp);
       }
@@ -975,7 +961,7 @@ void e6y_WriteStats(void)
   }
   max.stat[TT_TIME] = max.stat[TT_TIME]/TICRATE/60;
   max.stat[TT_TOTALTIME] = max.stat[TT_TOTALTIME]/TICRATE/60;
-  
+
   for(i=0; i<TT_MAX; i++) {
     doom_snprintf(str, 200, "%d", max.stat[i]);
     max.stat[i] = strlen(str);
@@ -989,19 +975,19 @@ void e6y_WriteStats(void)
       max.stat[TT_ALLKILL],   max.stat[TT_TOTALKILL],   allkills_len,
       max.stat[TT_ALLITEM],   max.stat[TT_TOTALITEM],   allitems_len,
       max.stat[TT_ALLSECRET], max.stat[TT_TOTALSECRET], allsecrets_len);
-    
-    fprintf(f, str, stats[level].map, 
+
+    fprintf(f, str, stats[level].map,
       stats[level].stat[TT_TIME]/TICRATE/60,
       (float)(stats[level].stat[TT_TIME]%(60*TICRATE))/TICRATE,
-      (stats[level].stat[TT_TOTALTIME])/TICRATE/60, 
+      (stats[level].stat[TT_TOTALTIME])/TICRATE/60,
       (stats[level].stat[TT_TOTALTIME]%(60*TICRATE))/TICRATE,
       stats[level].stat[TT_ALLKILL],  stats[level].stat[TT_TOTALKILL],   all[level].kill,
       stats[level].stat[TT_ALLITEM],  stats[level].stat[TT_TOTALITEM],   all[level].item,
       stats[level].stat[TT_ALLSECRET],stats[level].stat[TT_TOTALSECRET], all[level].secret
       );
-    
+
   }
-  
+
   fclose(f);
 }
 
@@ -1033,7 +1019,7 @@ void e6y_G_DoWorldDone(void)
 
     demo_warp = demo_stoponnext ||
       (gamemode == commercial ? (map == gamemap) : (episode == gameepisode && map == gamemap));
-    
+
     if (demo_warp && demo_skiptics == 0 && !firstmap)
       G_SkipDemoStop();
 
@@ -1046,7 +1032,7 @@ void e6y_G_DoWorldDone(void)
 #ifdef _WIN32
 HWND WIN32_GetHWND(void)
 {
-  static HWND Window = NULL; 
+  static HWND Window = NULL;
   if(!Window)
   {
     SDL_SysWMinfo wminfo;
@@ -1098,11 +1084,11 @@ void e6y_G_Compatibility(void)
 #endif
         emulated_version += b[i] * k;
       }
-      
+
       for (i = 0; i < PC_MAX; i++)
       {
-        prboom_comp[i].state = 
-          (emulated_version >= prboom_comp[i].minver && 
+        prboom_comp[i].state =
+          (emulated_version >= prboom_comp[i].minver &&
            emulated_version <  prboom_comp[i].maxver);
       }
     }
@@ -1151,7 +1137,7 @@ dboolean ProcessNoTagLines(line_t* line, sector_t **sec, int *secnum)
 char* PathFindFileName(const char* pPath)
 {
   const char* pT = pPath;
-  
+
   if (pPath)
   {
     for ( ; *pPath; pPath++)
@@ -1161,7 +1147,7 @@ char* PathFindFileName(const char* pPath)
         pT = pPath + 1;
     }
   }
-  
+
   return (char*)pT;
 }
 
@@ -1181,10 +1167,10 @@ void NormalizeSlashes2(char *str)
 unsigned int AfxGetFileName(const char* lpszPathName, char* lpszTitle, unsigned int nMax)
 {
   char* lpszTemp = PathFindFileName(lpszPathName);
-  
+
   if (lpszTitle == NULL)
     return strlen(lpszTemp)+1;
-  
+
   strncpy(lpszTitle, lpszTemp, nMax-1);
   return 0;
 }
@@ -1195,44 +1181,44 @@ void AbbreviateName(char* lpszCanon, int cchMax, int bAtLeastName)
   const char* lpszCur;
   const char* lpszBase;
   const char* lpszFileName;
-  
+
   lpszBase = lpszCanon;
   cchFullPath = strlen(lpszCanon);
-  
+
   cchFileName = AfxGetFileName(lpszCanon, NULL, 0) - 1;
   lpszFileName = lpszBase + (cchFullPath-cchFileName);
-  
+
   if (cchMax >= cchFullPath)
     return;
-  
+
   if (cchMax < cchFileName)
   {
     strcpy(lpszCanon, (bAtLeastName) ? lpszFileName : "");
     return;
   }
-  
+
   lpszCur = lpszBase + 2;
-  
+
   if (lpszBase[0] == '\\' && lpszBase[1] == '\\')
   {
     while (*lpszCur != '\\')
       lpszCur++;
   }
-  
+
   if (cchFullPath - cchFileName > 3)
   {
     lpszCur++;
     while (*lpszCur != '\\')
       lpszCur++;
   }
-  
+
   cchVolName = (int)(lpszCur - lpszBase);
   if (cchMax < cchVolName + 5 + cchFileName)
   {
     strcpy(lpszCanon, lpszFileName);
     return;
   }
-  
+
   while (cchVolName + 4 + (int)strlen(lpszCur) > cchMax)
   {
     do
@@ -1241,7 +1227,7 @@ void AbbreviateName(char* lpszCanon, int cchMax, int bAtLeastName)
     }
     while (*lpszCur != '\\');
   }
-  
+
   lpszCanon[cchVolName] = '\0';
   strcat(lpszCanon, "\\...");
   strcat(lpszCanon, lpszCur);
@@ -1258,7 +1244,7 @@ int HU_DrawDemoProgress(int force)
 
   int len, tics_count, diff;
   unsigned int tick, max_period;
-  
+
   if (gamestate == GS_DEMOSCREEN || (!demoplayback && !democontinue) || !hudadd_demoprogressbar)
     return false;
 
@@ -1283,7 +1269,7 @@ int HU_DrawDemoProgress(int force)
   }
 
   prev_len = len;
-  
+
   V_FillRect(0, 0, SCREENHEIGHT - 4, len - 0, 4, 4);
   if (len > 4)
     V_FillRect(0, 2, SCREENHEIGHT - 3, len - 4, 2, 0);
@@ -1297,7 +1283,7 @@ int GetFullPath(const char* FileName, const char* ext, char *Buffer, size_t Buff
   int i, Result;
   char *p;
   char dir[PATH_MAX];
-  
+
   for (i=0; i<3; i++)
   {
     switch(i)
@@ -1324,7 +1310,8 @@ int GetFullPath(const char* FileName, const char* ext, char *Buffer, size_t Buff
 }
 #endif
 
-#ifdef _WIN32
+//#ifdef _WIN32
+#ifdef IREALLYDONTWANTTOSUCCESFULLYCOMPILETHIS
 #include <Mmsystem.h>
 #pragma comment( lib, "winmm.lib" )
 int mus_extend_volume;
@@ -1332,7 +1319,7 @@ void I_midiOutSetVolumes(int volume)
 {
   // NSM changed to work on the 0-15 volume scale,
   // and to check mus_extend_volume itself.
-  
+
   MMRESULT result;
   int calcVolume;
   MIDIOUTCAPS capabilities;
@@ -1389,7 +1376,7 @@ void I_midiOutSetVolumes(int volume)
 */
 
 //===========================================================================
-// 
+//
 // smooth the edges of transparent fields in the texture
 // returns false when nothing is manipulated to save the work on further
 // levels
@@ -1412,7 +1399,7 @@ void I_midiOutSetVolumes(int volume)
 dboolean SmoothEdges(unsigned char * buffer,int w, int h)
 {
   int x,y;
-  dboolean trans=buffer[MSB]==0; // If I set this to false here the code won't detect textures 
+  dboolean trans=buffer[MSB]==0; // If I set this to false here the code won't detect textures
                                 // that only contain transparent pixels.
   unsigned char * l1;
 

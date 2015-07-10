@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT([PrBoom-Plus],[2.5.1.4],[],[prboom-plus])
+AC_INIT([xdre],[2.17],[],[xdre])
 
 AC_CONFIG_HEADER(config.h)
 AC_CONFIG_AUX_DIR(autotools)
@@ -10,7 +10,6 @@ AC_CANONICAL_TARGET
 
 dnl --- Fire up automake
 AM_INIT_AUTOMAKE([foreign -Woverride -Wobsolete -Wportability -Wsyntax -Wunsupported])
-ifdef([AM_SILENT_RULES],[AM_SILENT_RULES(yes)])
 AM_MAINTAINER_MODE([enable])
 
 AC_ARG_WITH(waddir,AC_HELP_STRING([--with-waddir],[Path to install prboom.wad and look for other WAD files]),
@@ -25,6 +24,7 @@ AC_DEFINE_UNQUOTED(DOOMWADDIR,"$DOOMWADDIR",[Define to be the path where Doom WA
 
 dnl --- Check for programs
 AC_PROG_CC
+AC_PROG_CXX
 AC_PROG_LN_S
 AC_PROG_RANLIB
 AC_GNU_SOURCE
@@ -40,8 +40,8 @@ else
 fi
 
 dnl --- cph: work out flags to pass to compiler
-CFLAGS_OPT="-O2 -fomit-frame-pointer"
-AC_C_COMPILE_FLAGS(-Wall -Wextra -Wno-missing-field-initializers -Wwrite-strings -Wundef -Wbad-function-cast -Wcast-align -Wcast-qual -Wdeclaration-after-statement -Wpointer-arith -ffast-math)
+CFLAGS_OPT=""
+AC_C_COMPILE_FLAGS(-Wall -Wextra -Wwrite-strings -Wundef -Wbad-function-cast -Wcast-align -Wcast-qual -Wdeclaration-after-statement -Wpointer-arith)
 dnl --- Option to enable debugging
 AC_ARG_ENABLE(debug,AC_HELP_STRING([--enable-debug],[turns on various debugging features, like range checking and internal heap diagnostics]),,enable_debug="no")
 if test "$enable_debug" = "no"
@@ -49,7 +49,7 @@ then
     AC_C_COMPILE_FLAGS(-Wno-unused -Wno-switch -Wno-sign-compare -Wno-pointer-sign)
 else
     CFLAGS_OPT="-g"
-    AC_C_COMPILE_FLAGS(-Wmissing-noreturn -Wredundant-decls -Wnested-externs -Wold-style-definition -Wmissing-declarations -Wmissing-format-attribute -Wvariadic-macros -Wdisabled-optimization -Wlarger-than-128000 -Waggregate-return -Wvolatile-register-var -Winline)
+    AC_C_COMPILE_FLAGS(-Wmissing-noreturn -Wredundant-decls -Wmissing-declarations -Wmissing-format-attribute -Wvariadic-macros -Wdisabled-optimization -Wlarger-than-128000 -Wvolatile-register-var -Winline)
     AC_DEFINE(RANGECHECK,1,[Define to enable internal range checking])
     AC_DEFINE(INSTRUMENTED,1,[Define this to see real-time memory allocation statistics, and enable extra debugging features])
     AC_DEFINE(TIMEDIAG,1,[Defining this causes time stamps to be created each time a lump is locked, and lumps locked for long periods of time are reported])
@@ -68,7 +68,12 @@ AC_CPU_OPTIMISATIONS
 dnl --- some defaults for CFLAGS
 AC_C_COMPILE_FLAGS($CFLAGS_OPT)
 dnl -Wmissing-prototypes -Wmissing-declarations 
-CFLAGS="$CFLAGS -I\$(top_srcdir)/src"
+CFLAGS="$CFLAGS -I\$(top_srcdir)/src/prboom-plus/src"
+CXXFLAGS="$CXXFLAGS $CFLAGS"
+CXXFLAGS=${CXXFLAGS//-Wbad-function-cast/}
+CXXFLAGS=${CXXFLAGS//-Wdeclaration-after-statement/}
+CXXFLAGS=${CXXFLAGS//-Wno-pointer-sign/}
+
 
 dnl --- Compiler characteristics
 AC_C_CONST
@@ -246,6 +251,30 @@ dnl - libpng
 AC_ARG_WITH([png], AC_HELP_STRING([--with-png], [Use libpng]),,with_png=no)
 AS_IF([test "x$with_png" != xno],AC_CHECK_LIB(png,png_create_info_struct))
 
+dnl - wxWidgets
+AM_OPTIONS_WXCONFIG
+reqwx=3.0.0
+if test "$cross_compiling" = "yes"; then
+  AM_PATH_WXCONFIG([$reqwx], [wxWin=1], [wxWin=0], [core base], [--static])
+else
+  AM_PATH_WXCONFIG([$reqwx], [wxWin=1], [wxWin=0], [core base])
+fi
+if test "$wxWin" != 1; then
+	AC_MSG_ERROR([
+		wxWidgets must be installed on your system.
+
+		Please check that wx-config is in path, the directory
+		where wxWidgets libraries are installed (returned by
+		'wx-config --libs' or 'wx-config --static --libs' command)
+		is in LD_LIBRARY_PATH or equivalent variable and
+		wxWidgets version is $reqwx or above.
+		])
+fi
+dnl AM_PATH_WXCONFIG seems bugged, so let's do libs manually if not cross compiling
+if test ! "$cross_compiling" = "yes"; then
+  WX_LIBS="$($WX_CONFIG_PATH --libs core,base)"
+fi
+
 AC_EGREP_HEADER(sockaddr_in6,netinet/in.h,AC_DEFINE(HAVE_IPv6,1,[Define if you have struct sockaddr_in6]))
 
 dnl --- Options
@@ -288,8 +317,10 @@ AC_SUBST(NET_LIBS)
 AC_SUBST(MATH_LIB)
 AC_SUBST(GL_LIBS)
 AC_SUBST(CFLAGS)
+AC_SUBST(CXXFLAGS)
+AC_SUBST(CPPFLAGS)
 AC_SUBST(DOOMWADDIR)
 
 dnl --- output
-AM_CONDITIONAL([CROSS_COMPILING], [test "x$cross_compiling" = "xyes"])
-AC_OUTPUT(Makefile src/Makefile src/POSIX/Makefile src/SDL/Makefile src/MAC/Makefile src/PCSOUND/Makefile src/TEXTSCREEN/Makefile src/MUSIC/Makefile doc/Makefile data/Makefile ICONS/Makefile VisualC6/Makefile VisualC8/Makefile prboom.spec)
+AC_CONFIG_SUBDIRS([src/prboom-plus])
+AC_OUTPUT([Makefile] [src/Makefile] [codeblocks/Makefile])

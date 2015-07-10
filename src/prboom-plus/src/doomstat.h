@@ -306,7 +306,8 @@ extern  int        maketic;
 // Networking and tick handling related.
 #define BACKUPTICS              12
 
-extern  ticcmd_t   netcmds[][BACKUPTICS];
+//extern  ticcmd_t   netcmds[][BACKUPTICS];
+extern  ticcmd_t   netcmds[];
 extern  int        ticdup;
 
 //-----------------------------------------------------------------------------
